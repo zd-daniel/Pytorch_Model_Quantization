@@ -21,6 +21,8 @@ class PoseEstimation(nn.Module):
         self.quant = torch.quantization.QuantStub()
 
         ########################## 根据模型需要重写 ############################
+        # pytorch量化暂不支持原地add和mul，所以resnet中的add需要改结构，或者反量化相加后量化
+        ####### self.func = torch.nn.quantized.FloatFunctional()
         self.layer0 = model.model.model[0]
         self.layer1 = model.model.model[1]
         self.layer2 = model.model.model[2]
